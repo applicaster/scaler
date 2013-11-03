@@ -1,0 +1,35 @@
+.container
+  .starter-template
+    .page-header
+      %h1 AutoScaling Groups
+    %table.table.table-striped
+      %thead
+        %tr
+          %td Name
+          %td Launch Configuration 
+          %td Availability Zones
+          %td Load Balancers
+          %td HC Grace Period
+          %td HC Type
+          %td Min Size
+          %td Max Size
+          %td
+      %tbody
+        - Group.all.each do |group|
+          %tr
+            %td= group.name
+            %td= group.launch_configuration_name
+            %td= group.availability_zone_names.join(', ')
+            %td= group.load_balancer_names.join(', ')
+            %td= group.health_check_grace_period
+            %td= group.health_check_type
+            %td= group.min_size
+            %td= group.max_size
+            %td
+              %a{ class: 'btn btn-default btn-xs', href: "/groups/#{group.name}/edit" }
+                %span.glyphicon.glyphicon-edit
+              %a{ class: 'btn btn-default btn-xs delete', href: "/groups/#{group.name}" }
+                %span.glyphicon.glyphicon-remove
+    %a{ class: 'btn btn-default', href: "/groups/new" }
+      %span.glyphicon.glyphicon-plus
+      Create AutoScaling Group

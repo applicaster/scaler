@@ -1,0 +1,37 @@
+.container
+  .starter-template 
+    .page-header
+      %h1 Create Launch Configuration
+    - form_for @launch_configuration, '/launch_configurations', :id => 'new_lc', method: 'post', role: 'form', class: 'form-horizontal' do |f|
+      = error_messages_for @launch_configuration 
+      .form-group
+        = f.label :name, class: 'col-lg-2 control-label'
+        .col-lg-10
+          = f.text_field :name, class: 'form-control'
+          %p.help-block The name of the launch configuration to create.
+      .form-group
+        = f.label :image_id, caption: 'Image ID', class: 'col-lg-2 control-label'
+        .col-lg-10
+          = f.select(:image_id, options: ec2_images_for_select, class: 'form-control')
+          %p.help-block Unique ID of the Amazon Machine Image (AMI) you want to use to launch your EC2 instances.
+      .form-group
+        = f.label :instance_type, class: 'col-lg-2 control-label'
+        .col-lg-10
+          = f.select(:instance_type, options: ec2_instances_for_select, class: 'form-control')
+          %p.help-block The instance type of the Amazon EC2 instance.
+      .form-group
+        = f.label :key_pair, class: 'col-lg-2 control-label'
+        .col-lg-10
+          = f.select(:key_pair, options: ec2_key_pairs_for_select, class: 'form-control')
+          %p.help-block The name of the Amazon EC2 key pair
+      .form-group
+        = f.label :security_groups, class: 'col-lg-2 control-label'
+        %div{class: 'col-lg-offset-2 col-lg-10'}
+          %p.help-block The security groups with which to associate Amazon EC2 or Amazon VPC instances.
+          - EC2.security_groups.each do |sg|
+            .checkbox
+              = check_box_tag(:security_groups, name: 'launch_configuration[security_groups][]', value: sg.name)
+              = sg.name
+      .form-group
+        %div{class: 'col-lg-offset-2 col-lg-10'}
+          = f.submit "Create", class: 'btn btn-default'

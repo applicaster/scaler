@@ -1,0 +1,27 @@
+.container
+  .starter-template 
+    .page-header
+      %h1 Scheduled Actions
+    %table.table.table-striped
+      %thead
+        %tr
+          %td Name
+          %td Group 
+          %td Desired Capacity
+          %td Start Time
+          %td
+      %tbody
+        - ScheduledAction.all.each do |sc|
+          %tr
+            %td= sc.name
+            %td= sc.auto_scaling_group_name
+            %td= sc.desired_capacity
+            %td= sc.start_time.in_time_zone("Jerusalem")
+            %td
+              %a{ class: 'btn btn-default btn-xs', href: "/scheduled_actions/#{sc.name}/edit" }
+                %span.glyphicon.glyphicon-edit
+              %a{ class: 'btn btn-default btn-xs delete', href: "/scheduled_actions/#{sc.name}" }
+                %span.glyphicon.glyphicon-remove
+    %a{ class: 'btn btn-default', href: "/scheduled_actions/new" }
+      %span.glyphicon.glyphicon-plus
+      Create Scheduled Action

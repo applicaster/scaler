@@ -1,0 +1,47 @@
+= error_messages_for @group 
+.form-group
+  = f.label :name, class: 'col-lg-2 control-label'
+  .col-lg-10
+    = f.text_field :name, class: 'form-control'
+    %p.help-block The name of the Auto Scaling group.
+.form-group
+  = f.label :launch_configuration, class: 'col-lg-2 control-label'
+  .col-lg-10
+    = f.select(:launch_configuration, options: launch_configurations_for_select, class: 'form-control')
+    %p.help-block The name of an existing launch configuration to use to launch new instances.
+.form-group
+  = f.label :availability_zones, class: 'col-lg-2 control-label'
+  %div{class: 'col-lg-offset-2 col-lg-10'}
+    %p.help-block A list of Availability Zones for the Auto Scaling group.
+    - EC2.availability_zones.each do |az|
+      .checkbox
+        = check_box_tag(:availability_zones, name: 'group[availability_zones][]', value: az.name, checked: checkbox_checked?(@group,'availability_zones',az.name))
+        = az.name
+.form-group
+  = f.label :load_balancers, class: 'col-lg-2 control-label'
+  %div{class: 'col-lg-offset-2 col-lg-10'}
+    %p.help-block A list of load balancers to use.
+    - ELB.load_balancers.each do |lb|
+      .checkbox
+        = check_box_tag(:load_balancers, name: 'group[load_balancers][]', value: lb.name, checked: checkbox_checked?(@group,'load_balancers',lb.name))
+        = lb.name
+.form-group
+  = f.label :health_check_grace_period, class: 'col-lg-2 control-label'
+  .col-lg-10
+    = f.text_field :health_check_grace_period, class: 'form-control'
+    %p.help-block Length of time in seconds after a new Amazon EC2 instance comes into service that Auto Scaling starts checking its health. During this time any health check failure for the that instance is ignored.
+.form-group
+  = f.label :health_check_type, class: 'col-lg-2 control-label'
+  .col-lg-10
+    = f.select(:health_check_type, options: ['elb','ec2'], class: 'form-control')
+    %p.help-block The service you want the health checks from, Amazon EC2 or Elastic Load Balancer.
+.form-group
+  = f.label :min_size, class: 'col-lg-2 control-label'
+  .col-lg-10
+    = f.text_field :min_size, class: 'form-control'
+    %p.help-block The minimum size of the Auto Scaling group.
+.form-group
+  = f.label :max_size, class: 'col-lg-2 control-label'
+  .col-lg-10
+    = f.text_field :max_size, class: 'form-control'
+    %p.help-block The maximum size of the Auto Scaling group.

@@ -1,0 +1,34 @@
+!!!
+%html
+  %head
+    %title Scaler 
+    %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}/
+    / Bootstrap
+    %link{href: "/css/bootstrap.min.css", media: "screen", rel: "stylesheet"}/
+    %link{href: "/css/jquery.simple-dtpicker.css", media: "screen", rel: "stylesheet"}/
+    %link{href: "/css/custom.css", media: "screen", rel: "stylesheet"}/
+  %body
+    .navbar.navbar-inverse.navbar-fixed-top
+      .container
+        .navbar-header
+          %button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", type: "button"}
+            %span.icon-bar
+            %span.icon-bar
+            %span.icon-bar
+          %a.navbar-brand{href: "/"} Scaler 
+        .collapse.navbar-collapse
+          %ul.nav.navbar-nav
+            %li
+              %a{href: "/scheduled_actions"} Scheduled Actions 
+            %li
+              %a{href: "/groups"} Autoscaling Groups
+            %li
+              %a{href: "/launch_configurations"} Launch Configurations 
+        / /.nav-collapse
+    = yield
+    / jQuery (necessary for Bootstrap's JavaScript plugins)
+    %script{src: "http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"}
+    %script{src: "/js/jquery.simple-dtpicker.js"}
+    / Include all compiled plugins (below), or include individual files as needed
+    %script{src: "/js/bootstrap.min.js"}
+    %script{src: "/js/applicastion.js"}

@@ -1,0 +1,27 @@
+.container
+  .starter-template 
+    .page-header
+      %h1 Launch Configurations
+    %table.table.table-striped
+      %thead
+        %tr
+          %td Name
+          %td Image
+          %td Instance Type
+          %td Key Pair
+          %td Security Groups 
+          %td
+      %tbody
+        - LaunchConfiguration.all.each do |lc|
+          %tr
+            %td= lc.name
+            %td= lc.image.name
+            %td= lc.instance_type
+            %td= lc.key_name
+            %td= lc.security_groups.map { |g| g.name }.join(', ')
+            %td
+              %a{ class: 'btn btn-default btn-xs delete', href: "/launch_configurations/#{lc.name}" }
+                %span.glyphicon.glyphicon-remove
+    %a{ class: 'btn btn-default', href: "/launch_configurations/new" } 
+      %span.glyphicon.glyphicon-plus
+      Create Launch Configuration

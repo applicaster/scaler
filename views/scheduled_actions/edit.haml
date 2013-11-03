@@ -1,0 +1,9 @@
+.container
+  .starter-template 
+    .page-header
+      %h1 Edit Scheduled Action
+    - form_for @scheduled_action, '/scheduled_actions', :id => 'edit_sa', method: 'put', role: 'form', class: 'form-horizontal' do |f|
+      = haml_template 'scheduled_actions/_form', object: @scheduled_action, locals: { f: f }
+      .form-group
+        %div{class: 'col-lg-offset-2 col-lg-10'}
+          = f.submit "Update", class: 'btn btn-default'
