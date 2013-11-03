@@ -23,9 +23,9 @@ The following Environment variables required by **Scaler**
 
 ```SCALER_PASS``` Password for http basic authentication
 
-```AWS_ACCESS_KEY_ID```
+```AWS_ACCESS_KEY_ID``` AWS access key ID
 
-```AWS_SECRET_ACCESS_KEY```
+```AWS_SECRET_ACCESS_KEY``` AWS secret access key
 
 ### Running the App
 
