@@ -19,6 +19,8 @@ $ bundle install
 
 The following Environment variables required by **Scaler**
 
+```SCALER_TZ``` The default TimeZone 
+
 ```SCALER_USER``` Username for http basic authentication
 
 ```SCALER_PASS``` Password for http basic authentication

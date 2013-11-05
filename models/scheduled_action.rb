@@ -20,7 +20,7 @@ class ScheduledAction
         scheduled_action.send("#{attr}=", aws_scheduled_action.send(attr))
       end
       scheduled_action.group = aws_scheduled_action.auto_scaling_group_name
-      scheduled_action.start_time = aws_scheduled_action.start_time.in_time_zone("Jerusalem").strftime("%Y-%m-%d %H:%M")
+      scheduled_action.start_time = aws_scheduled_action.start_time.in_time_zone(ENV['SCALER_TZ']).strftime("%Y-%m-%d %H:%M")
       scheduled_action
     else
       nil
