@@ -4,7 +4,6 @@ require './lib/helpers'
 require './models/launch_configuration'
 require './models/group'
 require './models/scheduled_action'
-require 'pry'
 register SinatraMore::MarkupPlugin
 register SinatraMore::RenderPlugin
 use Rack::MethodOverride
