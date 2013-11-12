@@ -16,7 +16,7 @@
             %td= sc.name
             %td= sc.auto_scaling_group_name
             %td= sc.desired_capacity
-            %td= sc.start_time.in_time_zone(ENV['SCALER_TZ'])
+            %td= local_time(sc.start_time)
             %td
               %a{ class: 'btn btn-default btn-xs', href: "/scheduled_actions/#{sc.name}/edit" }
                 %span.glyphicon.glyphicon-edit

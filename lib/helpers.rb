@@ -34,4 +34,8 @@ helpers do
     AS.groups.map { |l| l.name }
   end
 
+  def local_time(time)
+    time.in_time_zone(ENV['SCALER_TZ'])
+  end
+
 end
