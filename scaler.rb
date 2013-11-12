@@ -1,3 +1,4 @@
+require 'active_support/core_ext/time/zones'
 require 'sinatra_more/markup_plugin'
 require 'sinatra_more/render_plugin'
 require './lib/helpers'
@@ -17,6 +18,8 @@ AWS.config(:access_key_id => ENV['AWS_ACCESS_KEY_ID'], :secret_access_key => ENV
 AS = AWS::AutoScaling.new
 EC2 = AWS::EC2.new
 ELB = AWS::ELB.new
+
+before { Time.zone = ENV['SCALER_TZ'] }
 
 get '/' do
  haml :index 

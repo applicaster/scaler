@@ -16,11 +16,10 @@ class ScheduledAction
     aws_scheduled_action = AS.scheduled_actions[name]
     if aws_scheduled_action.exists?
       scheduled_action = self.new
-      %w{ name desired_capacity }.each do |attr|
+      %w{ name desired_capacity start_time}.each do |attr|
         scheduled_action.send("#{attr}=", aws_scheduled_action.send(attr))
       end
       scheduled_action.group = aws_scheduled_action.auto_scaling_group_name
-      scheduled_action.start_time = aws_scheduled_action.start_time.in_time_zone(ENV['SCALER_TZ']).strftime("%Y-%m-%d %H:%M")
       scheduled_action
     else
       nil
@@ -29,6 +28,16 @@ class ScheduledAction
 
   def self.all
     AS.scheduled_actions
+  end
+
+  def start_time=(time)
+    time.is_a?(Time) ? time : time = Time.zone.parse(time)
+    super
+  end
+
+  def start_time
+    time = super
+    time ? time.in_time_zone(ENV['SCALER_TZ']).to_time : time
   end
 
   def persisted?
