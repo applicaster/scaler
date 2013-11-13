@@ -37,7 +37,7 @@ class ScheduledAction
 
   def start_time
     time = super
-    time ? time.in_time_zone(ENV['SCALER_TZ']).to_time : time
+    time ? time.in_time_zone(ENV['SCALER_TZ']) : time
   end
 
   def persisted?
