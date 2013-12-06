@@ -15,7 +15,7 @@
         - LaunchConfiguration.all.each do |lc|
           %tr
             %td= lc.name
-            %td= lc.image.name
+            %td= image_name(lc)
             %td= lc.instance_type
             %td= lc.key_name
             %td= lc.security_groups.map { |g| g.name }.join(', ')

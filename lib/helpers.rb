@@ -38,4 +38,9 @@ helpers do
     time.in_time_zone(ENV['SCALER_TZ'])
   end
 
+  def image_name(launch_configuration)
+    image = launch_configuration.image
+    image.exists? ? image.name : "N/A" 
+  end
+
 end
