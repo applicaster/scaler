@@ -36,7 +36,7 @@ GEM
     method_source (0.8.2)
     minitest (4.7.5)
     multi_json (1.8.2)
-    nokogiri (1.5.10)
+    nokogiri (1.5.11)
     pry (0.9.12.2)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
