@@ -15,7 +15,7 @@ helpers do
   end
 
   def ec2_instances_for_select
-    ['t1.micro','m1.small','m1.medium','m1.large','c1.medium','c1.xlarge']
+    ['t2.micro','t2.small','m3.medium','m3.large','c3.large','c3.xlarge','c3.2xlarge','c3.4xlarge','c3.8xlarge']
   end
 
   def ec2_images_for_select
