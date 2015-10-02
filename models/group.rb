@@ -5,10 +5,10 @@ class Group
   include ActiveModel::Conversion
   include ActiveModel::Validations
 
-  attribute :name, String
+  attribute :auto_scaling_group_name, String
   attribute :launch_configuration, String
   attribute :availability_zones, Array 
-  attribute :load_balancers, Array
+  attribute :load_balancer_names, Array
   attribute :health_check_grace_period, Integer 
   attribute :health_check_type, String
   attribute :min_size, Integer
@@ -35,7 +35,14 @@ class Group
   end
 
   def self.all
-    AS.groups
+    response = client.describe_auto_scaling_groups
+    response.data[:auto_scaling_groups].map do |attributes|
+      self.new(attributes)
+    end
+  end
+
+  def name
+    auto_scaling_group_name
   end
 
   def persisted?
@@ -69,4 +76,7 @@ class Group
     end
   end
 
+  def self.client
+    AWS::AutoScaling.new.client
+  end
 end
