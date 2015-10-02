@@ -14,7 +14,12 @@ use Rack::Auth::Basic do |username, password|
   username == ENV['SCALER_USER'] && password == ENV['SCALER_PASS']
 end
 
-AWS.config(:access_key_id => ENV['AWS_ACCESS_KEY_ID'], :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY'])
+AWS.config({
+  access_key_id: ENV['AWS_ACCESS_KEY_ID'],
+  secret_access_key:ENV['AWS_SECRET_ACCESS_KEY'],
+  logger: Logger.new($stdout),
+})
+
 AS = AWS::AutoScaling.new
 EC2 = AWS::EC2.new
 ELB = AWS::ELB.new
