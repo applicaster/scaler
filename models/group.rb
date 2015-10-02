@@ -18,7 +18,7 @@ class Group
   validates_presence_of :health_check_grace_period, :health_check_type, :min_size, :max_size
 
   def self.find(name)
-    as_group = AS.groups[name]
+    as_group = auto_scaling.groups[name]
     if as_group.exists?
       group = self.new
       %w{ name health_check_grace_period health_check_type min_size max_size }.each do |attr|
@@ -59,24 +59,32 @@ class Group
   end
 
   def destroy
-    AS.groups[name].delete!
+    auto_scaling.groups[name].delete!
   end
 
   private
 
   def persist!
-    if AS.groups[name].exists?
-      AS.groups[name].update(launch_configuration: launch_configuration, availability_zones: availability_zones,
+    if auto_scaling.groups[name].exists?
+      auto_scaling.groups[name].update(launch_configuration: launch_configuration, availability_zones: availability_zones,
                     load_balancers: load_balancers, health_check_grace_period: health_check_grace_period,
                     health_check_type: health_check_type.to_sym, min_size: min_size, max_size: max_size)
     else
-      AS.groups.create(name, launch_configuration: launch_configuration, availability_zones: availability_zones,
+      auto_scaling.groups.create(name, launch_configuration: launch_configuration, availability_zones: availability_zones,
                     load_balancers: load_balancers, health_check_grace_period: health_check_grace_period,
                     health_check_type: health_check_type.to_sym, min_size: min_size, max_size: max_size)
     end
   end
 
   def self.client
-    AWS::AutoScaling.new.client
+    auto_scaling.client
+  end
+
+  def self.auto_scaling
+    AWS::AutoScaling.new
+  end
+
+  def auto_scaling
+    self.class.auto_scaling
   end
 end

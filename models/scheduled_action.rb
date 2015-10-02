@@ -13,7 +13,7 @@ class ScheduledAction
   validates_presence_of :name, :group, :desired_capacity, :start_time
 
   def self.find(name)
-    aws_scheduled_action = AS.scheduled_actions.detect { |a| a.name == name }
+    aws_scheduled_action = auto_scaling.scheduled_actions.detect { |a| a.name == name }
     if aws_scheduled_action
       scheduled_action = self.new
       %w{ name desired_capacity start_time}.each do |attr|
@@ -27,7 +27,7 @@ class ScheduledAction
   end
 
   def self.all
-    AS.scheduled_actions
+    auto_scaling.scheduled_actions
   end
 
   def start_time=(time)
@@ -54,18 +54,25 @@ class ScheduledAction
   end
 
   def destroy
-    aws_scheduled_action = AS.scheduled_actions.detect { |a| a.name == name }
+    aws_scheduled_action = auto_scaling.scheduled_actions.detect { |a| a.name == name }
     aws_scheduled_action.delete if aws_scheduled_action
   end
 
   private
 
   def persist!
-    if AS.scheduled_actions.filter(group: group)[name].exists?
-      AS.scheduled_actions.filter(group: group)[name].update(desired_capacity: desired_capacity, start_time: start_time)
+    if auto_scaling.scheduled_actions.filter(group: group)[name].exists?
+      auto_scaling.scheduled_actions.filter(group: group)[name].update(desired_capacity: desired_capacity, start_time: start_time)
     else
-      AS.scheduled_actions.create(name, group: group, desired_capacity: desired_capacity, start_time: start_time)
+      auto_scaling.scheduled_actions.create(name, group: group, desired_capacity: desired_capacity, start_time: start_time)
     end
   end
 
+  def self.auto_scaling
+    AWS::AutoScaling.new
+  end
+
+  def auto_scaling
+    self.class.auto_scaling
+  end
 end

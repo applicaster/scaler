@@ -2,7 +2,6 @@ require 'active_support/core_ext/time/zones'
 require 'sinatra_more/markup_plugin'
 require 'sinatra_more/render_plugin'
 require './lib/helpers'
-require './models/launch_configuration'
 require './models/group'
 require './models/scheduled_action'
 register SinatraMore::MarkupPlugin
@@ -20,10 +19,6 @@ AWS.config({
   logger: Logger.new($stdout),
 })
 
-AS = AWS::AutoScaling.new
-EC2 = AWS::EC2.new
-ELB = AWS::ELB.new
-
 before { Time.zone = ENV['SCALER_TZ'] }
 
 get '/' do
@@ -32,64 +27,6 @@ end
 
 get '/groups' do
   haml :"groups/index"
-end
-
-get '/groups/new' do
-  @group = Group.new
-  haml :"groups/new"
-end
-
-post '/groups' do
-  @group = Group.new(params[:group])
-  if @group.save
-    redirect to('/groups')
-  else
-    haml :"groups/new"
-  end
-end
-
-get '/groups/:name/edit' do |name|
-  @group = Group.find(name)
-  haml :"groups/edit"
-end
-
-put '/groups' do
-  @group = Group.new(params[:group])
-  if @group.save
-    redirect to('/groups')
-  else
-    haml :"groups/edit"
-  end
-end
-
-delete '/groups/:name' do |name|
-  @group = Group.find(name)
-  @group.destroy if @group
-  204
-end
-
-get '/launch_configurations' do
-  haml :"launch_configurations/index"
-end
-
-get '/launch_configurations/new' do
-  @launch_configuration = LaunchConfiguration.new
-  haml :"launch_configurations/new"
-end
-
-post '/launch_configurations' do
-  @launch_configuration = LaunchConfiguration.new(params[:launch_configuration])
-  if @launch_configuration.save
-    redirect to('/launch_configurations')
-  else
-    haml :"launch_configurations/new"
-  end
-end
-
-delete '/launch_configurations/:name' do |name|
-  @launch_configuration = LaunchConfiguration.find(name)
-  @launch_configuration.destroy if @launch_configuration
-  204
 end
 
 get '/scheduled_actions' do
