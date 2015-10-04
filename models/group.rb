@@ -5,10 +5,10 @@ class Group
   include ActiveModel::Conversion
   include ActiveModel::Validations
 
-  attribute :name, String
+  attribute :auto_scaling_group_name, String
   attribute :launch_configuration, String
   attribute :availability_zones, Array 
-  attribute :load_balancers, Array
+  attribute :load_balancer_names, Array
   attribute :health_check_grace_period, Integer 
   attribute :health_check_type, String
   attribute :min_size, Integer
@@ -18,7 +18,7 @@ class Group
   validates_presence_of :health_check_grace_period, :health_check_type, :min_size, :max_size
 
   def self.find(name)
-    as_group = AS.groups[name]
+    as_group = auto_scaling.groups[name]
     if as_group.exists?
       group = self.new
       %w{ name health_check_grace_period health_check_type min_size max_size }.each do |attr|
@@ -35,7 +35,14 @@ class Group
   end
 
   def self.all
-    AS.groups
+    response = client.describe_auto_scaling_groups
+    response.data[:auto_scaling_groups].map do |attributes|
+      self.new(attributes)
+    end
+  end
+
+  def name
+    auto_scaling_group_name
   end
 
   def persisted?
@@ -52,21 +59,32 @@ class Group
   end
 
   def destroy
-    AS.groups[name].delete!
+    auto_scaling.groups[name].delete!
   end
 
   private
 
   def persist!
-    if AS.groups[name].exists?
-      AS.groups[name].update(launch_configuration: launch_configuration, availability_zones: availability_zones,
+    if auto_scaling.groups[name].exists?
+      auto_scaling.groups[name].update(launch_configuration: launch_configuration, availability_zones: availability_zones,
                     load_balancers: load_balancers, health_check_grace_period: health_check_grace_period,
                     health_check_type: health_check_type.to_sym, min_size: min_size, max_size: max_size)
     else
-      AS.groups.create(name, launch_configuration: launch_configuration, availability_zones: availability_zones,
+      auto_scaling.groups.create(name, launch_configuration: launch_configuration, availability_zones: availability_zones,
                     load_balancers: load_balancers, health_check_grace_period: health_check_grace_period,
                     health_check_type: health_check_type.to_sym, min_size: min_size, max_size: max_size)
     end
   end
 
+  def self.client
+    auto_scaling.client
+  end
+
+  def self.auto_scaling
+    AWS::AutoScaling.new
+  end
+
+  def auto_scaling
+    self.class.auto_scaling
+  end
 end
