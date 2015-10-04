@@ -7,7 +7,7 @@ require './models/scheduled_action'
 register SinatraMore::MarkupPlugin
 register SinatraMore::RenderPlugin
 use Rack::MethodOverride
-set :server, 'thin'
+set :server, 'puma'
 set :root, File.dirname(__FILE__)
 use Rack::Auth::Basic do |username, password|
   username == ENV['SCALER_USER'] && password == ENV['SCALER_PASS']
