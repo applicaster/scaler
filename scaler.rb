@@ -30,6 +30,7 @@ get '/groups' do
 end
 
 get '/scheduled_actions' do
+  @scheduled_actions = ScheduledAction.all
   haml :"scheduled_actions/index"
 end
 

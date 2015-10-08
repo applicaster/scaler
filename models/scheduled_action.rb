@@ -8,9 +8,12 @@ class ScheduledAction
   attribute :name, String
   attribute :group, String
   attribute :desired_capacity, Integer
+  attribute :min_size, Integer
+  attribute :max_size, Integer
   attribute :start_time, Time
 
-  validates_presence_of :name, :group, :desired_capacity, :start_time
+  validates_presence_of :name, :group, :start_time
+  validate :action_makes_some_change
 
   def self.find(name)
     aws_scheduled_action = auto_scaling.scheduled_actions.detect { |a| a.name == name }
@@ -62,10 +65,26 @@ class ScheduledAction
 
   def persist!
     if auto_scaling.scheduled_actions.filter(group: group)[name].exists?
-      auto_scaling.scheduled_actions.filter(group: group)[name].update(desired_capacity: desired_capacity, start_time: start_time)
+      auto_scaling.scheduled_actions.filter(group: group)[name].update(attributes_for_api_call)
     else
-      auto_scaling.scheduled_actions.create(name, group: group, desired_capacity: desired_capacity, start_time: start_time)
+      auto_scaling.scheduled_actions.create(name, { group: group }.merge(attributes_for_api_call))
     end
+  end
+
+  def attributes_for_api_call
+    {}.tap do |attributes|
+      attributes[:start_time] = start_time
+      attributes[:min_size] = min_size if min_size.present?
+      attributes[:max_size] = max_size if max_size.present?
+      attributes[:desired_capacity] = desired_capacity if desired_capacity.present?
+    end
+  end
+
+  def action_makes_some_change
+    return if min_size.present?
+    return if max_size.present?
+    return if desired_capacity.present?
+    errors.add(:base, "Action is not making any change (min, max or desired)")
   end
 
   def self.auto_scaling
