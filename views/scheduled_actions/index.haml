@@ -7,15 +7,19 @@
         %tr
           %td Name
           %td Group 
-          %td Desired Capacity
+          %td Min
+          %td Desired
+          %td Max
           %td Start Time
           %td
       %tbody
-        - ScheduledAction.all.each do |sc|
+        - @scheduled_actions.each do |sc|
           %tr
             %td= sc.name
             %td= sc.auto_scaling_group_name
+            %td= sc.min_size
             %td= sc.desired_capacity
+            %td= sc.max_size
             %td= local_time(sc.start_time)
             %td
               %a{ class: 'btn btn-default btn-xs', href: "/scheduled_actions/#{sc.name}/edit" }
