@@ -1,0 +1,17 @@
+.container
+  .starter-template
+    .page-header
+      h1 Services
+    table.table.table-striped
+      thead
+        tr
+          td.col-sm-12 Name
+          td Actions
+      tbody
+        - services.each do |service|
+          tr
+            td= service.name
+
+            td
+              = link_to "/scheduled_actions/new" do
+                span.glyphicon.glyphicon-plus(rel="new_scheduled_action")

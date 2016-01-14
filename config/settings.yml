@@ -1,0 +1,13 @@
+services:
+  - name: Applicaster2
+    autoscaling_group_name: applicaster2
+    levels:
+      - name: Normal
+        min: 6
+        max: 12
+      - name: High
+        min: 12
+        max: 18
+      - name: Nuclear
+        min: 16
+        max: 21
