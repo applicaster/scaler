@@ -1,0 +1,24 @@
+.container
+  .starter-template
+    .page-header
+      h1 AutoScaling Groups
+    table.table.table-striped
+      thead
+        tr
+          td Name
+          td Availability Zones
+          td Load Balancers
+          td HC Grace Period
+          td HC Type
+          td Min Size
+          td Max Size
+      tbody
+        - groups.each do |group|
+          tr
+            td= group.name
+            td= group.availability_zones.join(', ')
+            td= group.load_balancer_names.join(', ')
+            td= group.health_check_grace_period
+            td= group.health_check_type
+            td= group.min_size
+            td= group.max_size
