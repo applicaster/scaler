@@ -1,13 +1,18 @@
+timezone: "Jerusalem"
 services:
-  - name: Applicaster2
+  applicaster2:
+    name: Applicaster2
     autoscaling_group_name: applicaster2
     levels:
       - name: Normal
         min: 6
         max: 12
+        label: Normal operation
       - name: High
         min: 12
         max: 18
+        label: Large event
       - name: Nuclear
         min: 16
         max: 21
+        label: Very large event

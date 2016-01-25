@@ -1,5 +1,5 @@
 class ServicesController < ApplicationController
-  expose(:services) { Settings.services }
+  expose(:services) { Service.all }
 
   def index
   end

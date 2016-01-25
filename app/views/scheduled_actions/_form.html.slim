@@ -1,0 +1,19 @@
+= bootstrap_form_for(scheduled_action, layout: :horizontal) do |f|
+  = f.alert_message "Please fix the errors below.", error_summary: false
+
+  = fieldset(title) do
+    = f.static_control :service do
+      = scheduled_action.service_id
+
+    = f.static_control :autoscaling_group_name
+    = f.text_field :starts_at, value: local_time(scheduled_action.starts_at)
+
+    .form-group
+      .col-sm-offset-2.col-sm-10
+        - service_levels.each do |level|
+          = f.radio_button :level, level.name, label: level.label
+
+
+    div.form-group
+      div.col-sm-offset-2.col-sm-10
+        = f.primary

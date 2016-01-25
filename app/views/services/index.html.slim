@@ -6,12 +6,49 @@
       thead
         tr
           td.col-sm-12 Name
+          td Min
+          td Desired
+          td Max
           td Actions
       tbody
         - services.each do |service|
           tr
             td= service.name
+            td= service.autoscaling_group.min_size
+            td
+            td= service.autoscaling_group.max_size
 
             td
-              = link_to "/scheduled_actions/new" do
-                span.glyphicon.glyphicon-plus(rel="new_scheduled_action")
+              = link_to glyphicon(:plus),
+                  { \
+                    controller: :scheduled_actions,
+                    action: :new,
+                    scheduled_action: { service_id: service.id},
+                  },
+                  class: "btn btn-default",
+                  rel: "new_scheduled_action"
+          - service.scheduled_actions.tap do |scheduled_actions|
+            - unless scheduled_actions.empty?
+              tr
+                td(colspan="5")
+                  table.table.table-striped
+                    thead
+                      tr
+                        td Name
+                        td Starts at
+                        td Min / Desired / Max / Level
+
+                    tbody
+                      - scheduled_actions.each do |scheduled_action|
+                        tr
+                          td= scheduled_action.scheduled_action_name
+                          td= scheduled_action.start_time
+                          td
+                            = value_or_empty_marker(scheduled_action.min_size)
+                            |  / 
+                            = value_or_empty_marker(scheduled_action.desired_capacity)
+                            |  / 
+                            = value_or_empty_marker(scheduled_action.max_size)
+                            |  / 
+                            = scheduled_action_level_or_empty(service, scheduled_action)
+

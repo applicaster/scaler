@@ -15,4 +15,30 @@ module ApplicationHelper
       active: active, wrap_tag: :li,
     )
   end
+
+  def glyphicon(name)
+    content_tag(:span, "", class: "glyphicon glyphicon-#{name}")
+  end
+
+  def fieldset(title, &block)
+    legend = content_tag(:legend, title)
+    content = capture(&block)
+    content_tag(:fieldset, legend + content)
+  end
+
+  def local_time(time)
+    time.in_time_zone(Time.zone).to_s
+  end
+
+  def value_or_empty_marker(value)
+    value || "--"
+  end
+
+  def scheduled_action_level_or_empty(service, scheduled_action)
+    level = service.levels.detect do |level|
+      level[:min] == scheduled_action.min_size &&
+      level[:max] == scheduled_action.max_size
+    end
+    level || "Custom"
+  end
 end
