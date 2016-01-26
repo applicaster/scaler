@@ -7,7 +7,7 @@ html
     = stylesheet_link_tag "application", media: "all"
     = javascript_include_tag "application"
 
-  body
+  body(data-controller="#{javascript_controller_name}" data-action="#{controller.action_name}")
     nav.navbar.navbar-default.navbar-fixed-top role="navigation"
       div.container-fluid
         div.navbar-header
@@ -31,5 +31,8 @@ html
 
         = render :partial => 'layouts/flash_messages'
         = yield
+
+    coffee:
+      $(() -> App.start_page_controller())
 
 

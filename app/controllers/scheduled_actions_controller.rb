@@ -1,17 +1,33 @@
 class ScheduledActionsController < ApplicationController
-  expose(:scheduled_action, attributes: :scheduled_action_params)
+  expose(:service) { Service.find(params[:service_id]) }
+
+  expose(:scheduled_action)
+  expose(:scheduled_action_form, attributes: :scheduled_action_params)
+
+  before_action :set_scheduled_action_form_dependencies
 
   def new
-    self.scheduled_action = ScheduledAction.new(scheduled_action_params)
   end
 
-  def starts_at
-    super.in_time_zone(Time.zone)
+  def create
+    if scheduled_action_form.save
+      redirect_to services_url, notice: "Scheduled action created"
+    else
+      render :new
+    end
   end
 
   def scheduled_action_params
     params.require(:scheduled_action).permit(
-      :service_id,
+      :start_time,
+      :level_name,
     )
+  end
+
+  def set_scheduled_action_form_dependencies
+    scheduled_action_form.attributes = {
+      service: service,
+      scheduled_action: scheduled_action,
+    }
   end
 end

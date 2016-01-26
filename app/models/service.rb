@@ -16,7 +16,7 @@ class Service
   end
 
   def scheduled_actions
-    ScheduledAction.find_by_autoscaling_group_name(autoscaling_group_name)
+    ScheduledAction.find_all_by_autoscaling_group_name(autoscaling_group_name)
   end
 
   def self.all
@@ -28,12 +28,13 @@ class Service
     Settings.services.
       to_a.
       select {|id, attributes| autoscaling_groups[attributes.autoscaling_group_name] }.
-      map do |id, attributes|
-        Service.new(attributes.to_hash.merge({
-          id: id,
-          autoscaling_group: autoscaling_groups[attributes.autoscaling_group_name],
-        }))
-      end
+      map { |id, attributes| Service.find(id) }.
+      each { |s| s.autoscaling_group = autoscaling_groups[s.autoscaling_group_name] }
+  end
+
+  def self.find(id)
+    return nil if Settings.services[id].blank?
+    Service.new(Settings.services[id].to_hash.merge(id: id))
   end
 end
 

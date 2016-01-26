@@ -1,18 +1,26 @@
-= bootstrap_form_for(scheduled_action, layout: :horizontal) do |f|
+= bootstrap_form_for(scheduled_action_form, layout: :horizontal) do |f|
   = f.alert_message "Please fix the errors below.", error_summary: false
+
+  - if scheduled_action_form.scheduled_action.errors.any?
+    div.alert.alert-danger
+      | Errors from ScheduledAction:
+      - scheduled_action_form.scheduled_action.errors.full_messages.each do |message|
+        p
+          = message
 
   = fieldset(title) do
     = f.static_control :service do
-      = scheduled_action.service_id
+      = service.id
+      = hidden_field_tag :service_id, service.id
 
-    = f.static_control :autoscaling_group_name
-    = f.text_field :starts_at, value: local_time(scheduled_action.starts_at)
+    = f.static_control :autoscaling_group_name do
+      = service.autoscaling_group_name
 
-    .form-group
-      .col-sm-offset-2.col-sm-10
-        - service_levels.each do |level|
-          = f.radio_button :level, level.name, label: level.label
+    = f.text_field :start_time, value: local_time(scheduled_action_form.start_time)
 
+    = f.form_group :level_name, label: { text: "Scale level" } do
+      - service.levels.each do |level|
+        = f.radio_button :level_name, level[:name], label: level[:label]
 
     div.form-group
       div.col-sm-offset-2.col-sm-10

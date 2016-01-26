@@ -2,7 +2,7 @@ module ApplicationHelper
   def flash_class(level)
     case level
     when :notice then "info"
-    when :error then "error"
+    when :error then "danger"
     when :alert then "warning"
     end
   end
@@ -27,7 +27,7 @@ module ApplicationHelper
   end
 
   def local_time(time)
-    time.in_time_zone(Time.zone).to_s
+    time.try(:in_time_zone, Time.zone).to_s
   end
 
   def value_or_empty_marker(value)
@@ -35,10 +35,14 @@ module ApplicationHelper
   end
 
   def scheduled_action_level_or_empty(service, scheduled_action)
-    level = service.levels.detect do |level|
+    matching_level = service.levels.detect do |level|
       level[:min] == scheduled_action.min_size &&
       level[:max] == scheduled_action.max_size
     end
-    level || "Custom"
+    matching_level.try(:[], :name) || "Custom"
+  end
+
+  def javascript_controller_name
+    "#{controller.controller_path.camelize}Controller"
   end
 end
