@@ -4,7 +4,7 @@ class ScheduledActionsController < ApplicationController
   expose(:scheduled_action)
   expose(:scheduled_action_form, attributes: :scheduled_action_params)
 
-  before_action :set_scheduled_action_form_dependencies
+  before_action :set_scheduled_action_form_dependencies, only: [:new, :create]
 
   def new
   end
@@ -14,6 +14,16 @@ class ScheduledActionsController < ApplicationController
       redirect_to services_url, notice: "Scheduled action created"
     else
       render :new
+    end
+  end
+
+  def destroy
+    if ScheduledAction.destroy(params[:id])
+      flash[:notice] = "Deleted scheduled action #{params[:id]}"
+      redirect_to services_url
+    else
+      flash[:error] = "Could not delete scheduled action #{params[:id]}"
+      redirect_to services_url
     end
   end
 

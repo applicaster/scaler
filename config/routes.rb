@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :services, only: [:index]
-  resources :scheduled_actions, only: [:new, :create]
+  resources :scheduled_actions, only: [:new, :create, :destroy]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

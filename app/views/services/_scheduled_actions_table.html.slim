@@ -4,12 +4,14 @@ table.table.table-striped
       td Name
       td Starts at
       td Min / Desired / Max / Level
+      td Actions
 
   tbody
     - scheduled_actions.each do |scheduled_action|
       tr
         td= scheduled_action.scheduled_action_name
         td= local_time(scheduled_action.start_time)
+
         td
           = value_or_empty_marker(scheduled_action.min_size)
           |  / 
@@ -18,3 +20,15 @@ table.table.table-striped
           = value_or_empty_marker(scheduled_action.max_size)
           |  / 
           = scheduled_action_level_or_empty(service, scheduled_action)
+
+        td
+          = link_to glyphicon(:trash),
+              { \
+                controller: :scheduled_actions,
+                action: :destroy,
+                id: scheduled_action.scheduled_action_name,
+              },
+              class: "btn btn-danger",
+              rel: "delete",
+              method: :delete,
+              data: { confirm: "Are you sure?" }

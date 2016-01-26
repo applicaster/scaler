@@ -25,6 +25,21 @@ class ScheduledAction
       map { |action| self.new(action) }
   end
 
+  def self.destroy(scheduled_action_name)
+    scheduled_action = autoscaling_client.describe_scheduled_actions({
+      scheduled_action_names: [scheduled_action_name],
+      max_records: 1,
+    })[:scheduled_update_group_actions].try(:first)
+
+    return false unless scheduled_action.present?
+
+    autoscaling_client.delete_scheduled_action({
+      auto_scaling_group_name: scheduled_action.auto_scaling_group_name,
+      scheduled_action_name: scheduled_action_name,
+    })
+    true
+  end
+
   def persisted?
     scheduled_action_name.present?
   end
