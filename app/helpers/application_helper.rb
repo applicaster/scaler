@@ -34,15 +34,19 @@ module ApplicationHelper
     value || "--"
   end
 
-  def scheduled_action_level_or_empty(service, scheduled_action)
+  def level_for_current_state(service, scheduled_action_or_autoscaling_group)
     matching_level = service.levels.detect do |level|
-      level[:min] == scheduled_action.min_size &&
-      level[:max] == scheduled_action.max_size
+      level[:min] == scheduled_action_or_autoscaling_group.min_size &&
+      level[:max] == scheduled_action_or_autoscaling_group.max_size
     end
     matching_level.try(:[], :name) || "Custom"
   end
 
   def javascript_controller_name
     "#{controller.controller_path.camelize}Controller"
+  end
+
+  def level_label_text(level)
+    "<strong>#{level.name}</strong> - #{level.label}".html_safe
   end
 end

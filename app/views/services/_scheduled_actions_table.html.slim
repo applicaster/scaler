@@ -24,7 +24,7 @@ table.table.table-striped
         td
           = value_or_empty_marker(scheduled_action.max_size)
         td
-          = scheduled_action_level_or_empty(service, scheduled_action)
+          = level_for_current_state(service, scheduled_action)
 
         td
           = link_to glyphicon(:trash),

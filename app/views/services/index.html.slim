@@ -10,6 +10,7 @@
           th Min
           th Desired
           th Max
+          th Level
           th Actions
       tbody
         - services.each do |service|
@@ -19,6 +20,7 @@
             td= service.autoscaling_group.min_size
             td= service.autoscaling_group.desired_capacity
             td= service.autoscaling_group.max_size
+            td= level_for_current_state(service, service.autoscaling_group)
 
             td
               = link_to glyphicon(:plus),

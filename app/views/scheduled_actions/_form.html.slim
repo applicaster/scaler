@@ -20,7 +20,7 @@
 
     = f.form_group :level_name, label: { text: "Scale level" } do
       - service.levels.each do |level|
-        = f.radio_button :level_name, level.name, label: level.label
+        = f.radio_button :level_name, level.name, label: level_label_text(level)
 
     div.form-group
       div.col-sm-offset-2.col-sm-10
