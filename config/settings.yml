@@ -16,3 +16,27 @@ services:
         min: 16
         max: 21
         label: Very large event
+  widgets:
+    name: Widgets
+    autoscaling_group_name: widgets
+    levels:
+      - name: Normal
+        min: 3
+        max: 12
+        label: Normal operation
+      - name: High
+        min: 12
+        max: 18
+        label: Large event
+  stars:
+    name: Stars
+    autoscaling_group_name: stars
+    levels:
+      - name: Normal
+        min: 3
+        max: 6
+        label: Normal operation
+      - name: Huge
+        min: 6
+        max: 12
+        label: Huge event (required only when expected users are over 3 million)

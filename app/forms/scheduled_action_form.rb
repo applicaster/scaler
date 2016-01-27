@@ -43,14 +43,14 @@ class ScheduledActionForm
     {
       start_time: start_time,
       autoscaling_group_name: service.autoscaling_group_name,
-      min_size: level.try(:[], :min),
-      max_size: level.try(:[], :max),
+      min_size: level.try(:min),
+      max_size: level.try(:max),
     }
   end
 
   def level
     return nil unless level_name
-    @level ||= service.levels.find { |l| l[:name] == level_name }
+    @level ||= service.levels.find { |l| l.name == level_name }
   end
 
   private

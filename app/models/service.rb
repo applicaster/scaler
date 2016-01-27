@@ -9,7 +9,7 @@ class Service
   attribute :name, String
   attribute :autoscaling_group_name, String
   attribute :autoscaling_group
-  attribute :levels, Array
+  attribute :levels, Array[Level]
 
   def persisted?
     true
@@ -25,16 +25,42 @@ class Service
       hash.merge(group.auto_scaling_group_name => group)
     end
 
-    Settings.services.
+    services.
       to_a.
-      select {|id, attributes| autoscaling_groups[attributes.autoscaling_group_name] }.
+      select {|id, attributes| autoscaling_groups[attributes[:autoscaling_group_name]] }.
       map { |id, attributes| Service.find(id) }.
       each { |s| s.autoscaling_group = autoscaling_groups[s.autoscaling_group_name] }
   end
 
   def self.find(id)
-    return nil if Settings.services[id].blank?
-    Service.new(Settings.services[id].to_hash.merge(id: id))
+    return nil if services[id].blank?
+    Service.new(services[id].to_hash.merge(id: id))
+  end
+
+  def self.services
+    @services ||= Settings.services.to_hash.with_indifferent_access.tap do |services_data|
+      validate_services_data(services_data)
+    end
+  end
+
+  def self.validate_services_data(services_data)
+    raise TypeError unless services_data.kind_of?(Hash)
+    services_data.each do |id, attributes|
+      message = "'#{id}' service is misconfigured"
+      fail(ArgumentError, message) unless attributes[:autoscaling_group_name].present?
+      fail(ArgumentError, message) unless attributes[:levels].present?
+      fail(ArgumentError, message) unless attributes[:levels].kind_of?(Array)
+      attributes[:levels].each do |level|
+        fail(ArgumentError, message) unless level[:name].present?
+        fail(ArgumentError, message) unless level[:label].present?
+        fail(ArgumentError, message) unless level[:min].present?
+        fail(ArgumentError, message) unless level[:max].present?
+      end
+    end
+  end
+
+  def self.services=(val)
+    @services = val
   end
 end
 
