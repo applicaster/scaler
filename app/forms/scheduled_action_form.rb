@@ -17,6 +17,8 @@ class ScheduledActionForm
   validates :level_name, presence: true
   validates :service, presence: true
 
+  validate :start_time_is_in_the_future
+
   validates :scheduled_action,
     presence: true,
     associated: true
@@ -49,5 +51,12 @@ class ScheduledActionForm
   def level
     return nil unless level_name
     @level ||= service.levels.find { |l| l[:name] == level_name }
+  end
+
+  private
+
+  def start_time_is_in_the_future
+    return if start_time > Time.now
+    errors.add(:start_time, "must be in the future")
   end
 end
