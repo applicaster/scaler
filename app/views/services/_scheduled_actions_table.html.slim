@@ -1,10 +1,15 @@
 table.table.table-striped
   thead
     tr
-      td Name
-      td Starts at
-      td Min / Desired / Max / Level
-      td Actions
+      th(colspan="7") Scheduled Actions
+    tr
+      th Name
+      th Starts at
+      th Min
+      th Desired
+      th Max
+      th Level
+      th Actions
 
   tbody
     - scheduled_actions.each do |scheduled_action|
@@ -14,11 +19,11 @@ table.table.table-striped
 
         td
           = value_or_empty_marker(scheduled_action.min_size)
-          |  / 
+        td
           = value_or_empty_marker(scheduled_action.desired_capacity)
-          |  / 
+        td
           = value_or_empty_marker(scheduled_action.max_size)
-          |  / 
+        td
           = scheduled_action_level_or_empty(service, scheduled_action)
 
         td
