@@ -47,6 +47,6 @@ module ApplicationHelper
   end
 
   def level_label_text(level)
-    "<strong>#{level.name}</strong> - #{level.label}".html_safe
+    "<strong>#{level.name}</strong> - #{level.label} [min:#{level.min} max:#{level.max}]".html_safe
   end
 end
