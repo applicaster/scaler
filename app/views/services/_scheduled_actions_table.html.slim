@@ -32,6 +32,7 @@ table.table.table-striped
                 controller: :scheduled_actions,
                 action: :destroy,
                 id: scheduled_action.scheduled_action_name,
+                service_id: service.id,
               },
               class: "btn btn-danger",
               rel: "delete",

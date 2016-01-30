@@ -45,6 +45,7 @@ class ScheduledActionForm
       autoscaling_group_name: service.autoscaling_group_name,
       min_size: level.try(:min),
       max_size: level.try(:max),
+      region: service.region,
     }
   end
 

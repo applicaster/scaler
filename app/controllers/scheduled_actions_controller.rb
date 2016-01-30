@@ -18,7 +18,7 @@ class ScheduledActionsController < ApplicationController
   end
 
   def destroy
-    if ScheduledAction.destroy(params[:id])
+    if ScheduledAction.destroy(params[:id], service.region)
       flash[:notice] = "Deleted scheduled action #{params[:id]}"
       redirect_to services_url
     else
