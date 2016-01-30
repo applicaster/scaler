@@ -16,7 +16,7 @@ services:
       - name: XLarge
         min: 18
         max: 18
-        label: Huge event
+        label: Huge event (required only when expected users are over 3 million)
   widgets:
     name: Widgets
     region: us-east-1
@@ -59,4 +59,4 @@ services:
       - name: XLarge
         min: 20
         max: 20
-        label: Huge event
+        label: Huge event (required only when expected users are over 500K)
