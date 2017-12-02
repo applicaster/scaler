@@ -82,8 +82,7 @@ GEM
       dry-validation (>= 0.10.4)
     crass (1.0.3)
     debug_inspector (0.0.3)
-    decent_exposure (3.0.2)
-      activesupport (>= 4.0)
+    decent_exposure (2.3.3)
     deep_merge (1.1.1)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
@@ -271,7 +270,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.1.0)
   config
-  decent_exposure
+  decent_exposure (~> 2.3)
   dotenv-rails
   jbuilder (~> 2.0)
   jquery-rails

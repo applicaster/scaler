@@ -9,7 +9,7 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 gem 'quiet_assets'
 
-gem 'decent_exposure'
+gem 'decent_exposure', '~> 2.3'
 gem 'bootstrap_form'
 gem 'active_link_to'
 gem 'binding_of_caller'
