@@ -10,6 +10,10 @@ class ApplicationController < ActionController::Base
     password: ENV.fetch("SCALER_PASS"),
   )
 
+  decent_configuration do
+    strategy DecentExposure::StrongParametersStrategy
+  end
+
   protected
 
   def set_current_timezone(&block)
