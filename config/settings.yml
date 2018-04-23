@@ -7,11 +7,11 @@ services:
     levels:
       - name: Normal
         min: 6
-        max: 6
+        max: 12
         label: Normal operation
       - name: Large
         min: 12
-        max: 12
+        max: 18
         label: Large event
       - name: XLarge
         min: 18
