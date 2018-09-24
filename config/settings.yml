@@ -1,22 +1,5 @@
 timezone: "Jerusalem"
 services:
-  applicaster2:
-    name: Applicaster2
-    region: us-east-1
-    autoscaling_group_name: applicaster2
-    levels:
-      - name: Normal
-        min: 6
-        max: 12
-        label: Normal operation
-      - name: Large
-        min: 12
-        max: 18
-        label: Large event
-      - name: XLarge
-        min: 18
-        max: 18
-        label: Huge event (required only when expected users are over 3 million)
   widgets:
     name: Widgets
     region: us-east-1
